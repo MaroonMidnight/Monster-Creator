@@ -1,5 +1,6 @@
 from django.db import models
 
+from django.urls import reverse
 # Create your models here.
 
 SPECIES = (
@@ -19,20 +20,20 @@ PASSIVE = (
 )
 
 SPECIALS = (
-    ('P', 'Punch'),
-    ('K', 'Kick'),
-    ('S', 'Suffocation'),
-    ('F', 'Fire Claw'),
-    ('W', 'Wet Body'),
-    ('SH', 'Shadow Ball'),
-    ('FB', 'Fire Ball'),
-    ('H', 'Holy'),
-    ('G', 'Grass Knot'),
-    ('S', 'Slam'),
+    ('P', 'Punch'),       
+    ('K', 'Kick'),       
+    ('S', 'Suffocation'),       
+    ('F', 'Fire Claw'),       
+    ('W', 'Wet Body'),       
+    ('SH', 'Shadow Ball'),       
+    ('FB', 'Fire Ball'),       
+    ('H', 'Holy'),       
+    ('G', 'Grass Knot'),       
+    ('S', 'Slam'),       
 )
 
 class Moves(models.Model):
-    move_description = models.CharField(max_length=50)
+    move_effect = models.CharField(max_length=50)
     special = models.CharField(
         max_length=2,
         choices=SPECIALS,
@@ -40,7 +41,11 @@ class Moves(models.Model):
         )
     
     def __str__(self):
-        return f"{self.move_description}"
+        return self.special
+    
+    def get_absolute_url(self):
+        return reverse("moves-detail", kwargs={"pk": self.id})
+    
     
     
 class Monster(models.Model):
@@ -62,6 +67,10 @@ class Monster(models.Model):
     
     def __str__(self):
         return self.name
+    
+    def get_absolute_url(self):
+        return reverse("monster-detail", kwargs={"monster_id": self.id})
+    
     
     
 # class Passive(models.Model):

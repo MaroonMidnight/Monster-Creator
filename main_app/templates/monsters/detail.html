@@ -1,0 +1,68 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block head %}
+    
+{% endblock head %}
+    
+
+{% block content %}
+
+<section>
+    <div>
+        <h1>{{ monster.name }}</h1>
+        <h2>Attack: {{ monster.attack }}</h2>
+        <h2>Speed: {{ monster.speed }}</h2>
+        <h2>Defense: {{ monster.defense }}</h2>
+        <p>{{ monster.get_species_display }}</p>
+        <diV class="monster-actions">
+            <a href="{% url 'monster-update' monster.id %}" class="btn upd">Edit</a>
+            <a href="{% url 'monster-delete' monster.id %}" class="btn del">Delete</a>
+        <div>
+    </div>
+</section>
+<section class="movess">
+    <div class="subsection-title">
+      <h2>Moves</h2>
+    </div>
+    <h3>{{ monster.name }}'s Moves</h3>
+    <div class="subsection-content">
+      {% if monster.moves.count %} 
+        {% for moves in monster.moves.all %}
+          <div class="move-container">
+            <div class="color-block" style="background-color: {{ move.color }}"></div>
+            <a href="{% url 'moves-detail' moves.id %}">
+              <p>{{ moves.get_special_display }}</p>
+            </a>
+          </div>
+          <form action="{% url 'remove-moves' monster.id moves.id %}" method="post">
+            {% csrf_token %}
+            <button type="submit" class="btn btn-del">Remove Move </button>
+          </form>
+        {% endfor %} 
+      {% else %}
+        <p class="no-moves">{{monster.name}} doesn't have any moves!</p>
+      {% endif %}
+    </div>
+  
+    <h3>Available Moves</h3>
+    <div class="subsection-content">
+        {% if moves.count %} 
+    {% for moves in moves.all %}
+      <div class="moves-container">
+        <div class="color-block" style="background-color: {{ moves.color }}"></div>
+        <a href="{% url 'moves-detail' moves.id %}">
+          <p>{{ moves.get_special_display }}</p>
+        </a>
+        <form action="{% url 'associate-moves' monster.id moves.id %}" method="post">
+          {% csrf_token %}
+          <button type="submit" class="btn submit">Give Move</button>
+        </form>
+      </div>
+    {% endfor %} 
+  {% else %}
+    <p class="all-moves">{{monster.name}} has reached the allowed limit of moves</p>
+  {% endif %}
+    </div>
+  </section>
+{% endblock content %}
+    

@@ -1,0 +1,25 @@
+{% extends 'base.html' %} 
+{% load static %} 
+{% block content %}
+
+<section class="page-header">
+  <h1>All Monsters</h1>
+</section>
+
+<section class="card-container">
+  {% for monster in monster_list %}
+    <div class="card" style="border-color: {{ item.color }}">
+      <div class="card-bg" style="background-color: {{ item.color }}"></div>
+      <a href="{% url 'monster-detail' monster.id %}">
+        <div class="card-content">
+          <h2>{{ monster.name }}</h2>
+          <p>Attack: {{ monster.attack }}</p>
+          <p>Speed: {{ monster.speed }}</p>
+          <p>Defense: {{ monster.defense }}</p>
+        </div>
+      </a>
+    </div>
+  {% endfor %}
+</section>
+
+{% endblock %}

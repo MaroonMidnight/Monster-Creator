@@ -1,0 +1,18 @@
+{% extends 'base.html' %} 
+{% load static %} 
+{% block head %}
+{% endblock %} 
+{% block content %}
+
+<div class="card" style="border-color: {{ move.color }}">
+  <div class="card-bg" style="background-color: {{ move.color }}"></div>
+  <div class="card-content">
+    <p>Name: {{ moves.special }}</p>
+    <h2>Move Detail: </h2><p>{{ moves.move_effect }}</p>
+  </div>
+</div>
+<a href="{% url 'moves-update' moves.id %}" class="btn upd">Edit</a>
+<a href="{% url 'moves-delete' moves.id %}" class="btn del">Delete</a>
+
+
+{% endblock %}
