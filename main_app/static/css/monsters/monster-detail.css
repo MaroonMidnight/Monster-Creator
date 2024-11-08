@@ -1,0 +1,168 @@
+
+
+.monster-container {
+    padding: 35px 30px;
+    display: flex;
+	flex-direction: column;
+	align-items: flex-start;
+	justify-content: center;
+    background-color: orange;
+    border-radius: 20px;
+}
+
+.monster-details {
+    margin-top: 20px;
+}
+
+.monster-actions {
+    margin-top: 20px;
+}
+
+.moves-container {
+    /* display: flex; */
+	flex-direction: column;
+	padding-bottom: 20px;
+	align-items: center;
+
+}
+
+.subsection-title {
+	display: flex;
+	align-items: center;
+	margin-bottom: 12px;
+  }
+
+  .subsection-content {
+	margin: 0 8px;
+  }
+
+.move-container {
+    display: flex;
+	align-items: start;
+	flex-wrap: wrap; 
+}
+
+.color-block {
+	opacity: 0.8;
+	height: 25px;
+	width: 25px;
+	margin-right: 10px;
+  }
+
+  .no-moves,
+  .all-moves {
+	margin: 0;
+	font-weight: bold;
+  }
+  
+  .no-moves {
+	color: var(--del);
+  }
+  
+  .all-moves {
+	color: var(--submit);
+  }
+
+  .monster-details h1 {
+	font-size: var(--font-xxl);
+	margin: 15px 0 3px;
+  }
+
+  .monster-details h2 {
+	font-size: var(--font-xl);
+	margin: 0 0 10px;
+	margin-top: 0;
+	margin-bottom: 10px;
+  }
+
+  .monster-details h3 {
+	margin: 20px 0 10px;
+	font-size: var(--font-l);
+  }
+
+  .monster-details p {
+	font-size: var(--font-reg);
+	margin: 5px 0;
+  }
+
+  .moves-container > section {
+	width: 80%;
+	min-width: 360px;
+	border: var(--borders);
+	border-radius: var(--card-border-radius);
+	padding: 10px;
+	box-shadow: var(--card-box-shadow);
+	display: flex;
+	flex-direction: column;
+	justify-content: center;
+	margin-bottom: 20px;
+  }
+  .moves h2 {
+	font-size: 3.2rem;
+	margin: 0;
+  }
+
+  .moves h3 {
+	font-size: var(--font-xl);
+	margin: 10px 0;
+  }
+
+  .subsection-content p,
+  .subsection-content input,
+  .subsection-content select {
+	font-size: var(--font-l);
+  }
+
+  .subsection-content input,
+  .subsection-content select {
+	margin-left: 5px;
+	padding: 3px;
+  }
+
+  .moves-container p {
+	margin: 12px 0;
+  }
+  
+  .moves-container a {
+	text-decoration: none;
+	color: #111;
+  }
+  
+  .moves-container .btn {
+	padding: 3px 10px;
+	margin-left: 10px;
+  }
+
+  .btn-del {
+	color: red;
+	border-color: red;
+	border-radius: 5px;
+	background-color: white;
+  }
+
+  .btn-del:hover {
+	background-color: rgb(201, 198, 198);
+	cursor: pointer;
+  }
+  
+  .move-title {
+	font-size: 20px;
+  }
+
+  .move-card {
+	display: flex;
+	flex-direction: row;
+	/* background-color: white; */
+	max-width: 150px;
+	text-align: center;
+	border-radius: 5px;
+	border-color: red;
+  }
+
+  .positive {
+	color: rgb(11, 173, 11);
+  }
+
+  .negative {
+	color: red;
+  }

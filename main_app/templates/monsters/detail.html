@@ -1,61 +1,91 @@
 {% extends 'base.html' %}
 {% load static %}
 {% block head %}
+<link rel="stylesheet" href="{% static 'css/monsters/monster-detail.css' %}" />
     
 {% endblock head %}
-    
 
 {% block content %}
 
-<section>
-    <div>
+<section class="monster-container">
+    <div class="monster-details">
         <h1>{{ monster.name }}</h1>
-        <h2>Attack: {{ monster.attack }}</h2>
-        <h2>Speed: {{ monster.speed }}</h2>
-        <h2>Defense: {{ monster.defense }}</h2>
-        <p>{{ monster.get_species_display }}</p>
+        <h2>Passive: {{ monster.get_passive_display }} </h2>
+        <h2>Attack: {{ monster.attack }} 
+          
+          {% if monster.passive == 'F' %}
+              <span class="positive">(+1)</span> 
+          {% elif monster.passive == 'N' %}
+              <span class="negative">(-1)</span>
+          {% else %}
+            <span></span> 
+          {% endif %}
+        </h2>
+        <h2>Speed: {{ monster.speed }}
+          {% if monster.passive == 'N' %}
+              <span class="positive">(+1)</span> 
+          {% elif monster.passive == 'S' %}
+              <span class="negative">(-1)</span>
+          {% else %}
+            <span></span> 
+          {% endif %}
+        </h2>
+          
+        <h2>Defense: {{ monster.defense }}
+          {% if monster.passive == 'S' %}
+              <span class="positive">(+1)</span> 
+          {% elif monster.passive == 'F' %}
+              <span class="negative">(-1)</span>
+          {% else %}
+               <span></span> 
+          {% endif %}
+        </h2>
+        <h2>Species: {{ monster.get_species_display }}</h2>
         <diV class="monster-actions">
             <a href="{% url 'monster-update' monster.id %}" class="btn upd">Edit</a>
             <a href="{% url 'monster-delete' monster.id %}" class="btn del">Delete</a>
         <div>
     </div>
 </section>
-<section class="movess">
-    <div class="subsection-title">
-      <h2>Moves</h2>
-    </div>
-    <h3>{{ monster.name }}'s Moves</h3>
-    <div class="subsection-content">
-      {% if monster.moves.count %} 
-        {% for moves in monster.moves.all %}
-          <div class="move-container">
-            <div class="color-block" style="background-color: {{ move.color }}"></div>
-            <a href="{% url 'moves-detail' moves.id %}">
-              <p>{{ moves.get_special_display }}</p>
-            </a>
-          </div>
-          <form action="{% url 'remove-moves' monster.id moves.id %}" method="post">
-            {% csrf_token %}
-            <button type="submit" class="btn btn-del">Remove Move </button>
-          </form>
-        {% endfor %} 
-      {% else %}
-        <p class="no-moves">{{monster.name}} doesn't have any moves!</p>
-      {% endif %}
-    </div>
-  
-    <h3>Available Moves</h3>
+<div class="moves-container">
+  <section class="moves">
+      <div class="subsection-title">
+        <h2>Moves</h2>
+      </div>
+      <h3>{{ monster.name }}'s Moves</h3>
+      <div class="subsection-content">
+        {% if monster.moves.count %} 
+          {% for moves in monster.moves.all %}
+            <div class="move-container">
+              <div class="color-block" style="background-color: {{ monster.color }}"></div>
+              <a href="{% url 'moves-detail' moves.id %}">
+                <p>{{ moves.get_special_display }}</p>
+              </a>
+            </div>
+            <form action="{% url 'remove-moves' monster.id moves.id %}" method="post">
+              {% csrf_token %}
+              <button type="submit" class="btn-del">Remove Move </button>
+            </form>
+          {% endfor %} 
+        {% else %}
+          <p class="no-moves">{{monster.name}} doesn't have any moves!</p>
+        {% endif %}
+      </div>
+</div>  
+    <h3 class="move-title">Available Moves</h3>
     <div class="subsection-content">
         {% if moves.count %} 
     {% for moves in moves.all %}
       <div class="moves-container">
         <div class="color-block" style="background-color: {{ moves.color }}"></div>
         <a href="{% url 'moves-detail' moves.id %}">
+          <div class="move-card">
           <p>{{ moves.get_special_display }}</p>
         </a>
         <form action="{% url 'associate-moves' monster.id moves.id %}" method="post">
           {% csrf_token %}
           <button type="submit" class="btn submit">Give Move</button>
+        </div>
         </form>
       </div>
     {% endfor %} 

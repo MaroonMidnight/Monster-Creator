@@ -1,5 +1,10 @@
 {% extends 'base.html' %} 
 {% load static %} 
+
+{% block head %}
+<link rel="stylesheet" href="{% static 'css/monsters/monster-index.css' %}" />
+{% endblock head %}
+  
 {% block content %}
 
 <section class="page-header">
@@ -8,15 +13,40 @@
 
 <section class="card-container">
   {% for monster in monster_list %}
-    <div class="card" style="border-color: {{ item.color }}">
-      <div class="card-bg" style="background-color: {{ item.color }}"></div>
+    <div class="card">
+      <div class="card-bg" style="background-color: {{ monster.color }}">
       <a href="{% url 'monster-detail' monster.id %}">
         <div class="card-content">
           <h2>{{ monster.name }}</h2>
-          <p>Attack: {{ monster.attack }}</p>
-          <p>Speed: {{ monster.speed }}</p>
-          <p>Defense: {{ monster.defense }}</p>
+          <p>Attack: {{ monster.attack }}
+            {% if monster.passive == 'F' %}
+              <span class="positive">(+1)</span> 
+          {% elif monster.passive == 'N' %}
+              <span class="negative">(-1)</span>
+          {% else %}
+            <span></span> 
+          {% endif %}
+          </p>
+          <p>Speed: {{ monster.speed }}
+            {% if monster.passive == 'N' %}
+            <span class="positive">(+1)</span> 
+        {% elif monster.passive == 'S' %}
+            <span class="negative">(-1)</span>
+        {% else %}
+          <span></span> 
+        {% endif %}
+          </p>
+          <p>Defense: {{ monster.defense }}
+            {% if monster.passive == 'S' %}
+            <span class="positive">(+1)</span> 
+        {% elif monster.passive == 'F' %}
+            <span class="negative">(-1)</span>
+        {% else %}
+             <span></span> 
+        {% endif %}
+          </p>
         </div>
+      </div>
       </a>
     </div>
   {% endfor %}

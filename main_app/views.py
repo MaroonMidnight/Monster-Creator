@@ -2,25 +2,52 @@ from django.shortcuts import render, redirect
 from .models import Monster, Moves
 from django.views.generic.edit import CreateView, UpdateView, DeleteView
 from django.views.generic import ListView, DetailView
-from django.core.validators import MinValueValidator, MaxValueValidator
+from django.contrib.auth.views import LoginView
+from django.contrib.auth import login
+from django.contrib.auth.forms import UserCreationForm
+from django.contrib.auth.decorators import login_required
+from django.contrib.auth.mixins import LoginRequiredMixin
 
 # Create your views here.
 
-def home(request):
-    return render(request, 'home.html')
+def signup(request):
+    error_message = ''
+    if request.method == 'POST':
+        form = UserCreationForm(request.POST)
+        if form.is_valid():
+            user = form.save()
+            login(request, user)
+            return redirect('monster-index')
+        else:
+            error_message = 'Invalid sign up - try again'
+    form = UserCreationForm()
+    context = {'form': form, 'error_message': error_message}
+    return render(request, 'signup.html', context)
+
+
+class Home(LoginView):
+    template_name = 'home.html'
 
 def about(request):
     return render(request, 'about.html')
 
-class MonsterList(ListView):
+
+
+class MonsterList(LoginRequiredMixin,ListView):
     model = Monster
 
+    def get_queryset(self):
+        # Filter the queryset to show only objects related to the logged-in user
+        return Monster.objects.filter(user=self.request.user)
+
+@login_required
 def monster_detail(request, monster_id):
     monster = Monster.objects.get(id=monster_id)
-    moves_monster_doesnt_have = Moves.objects.exclude(id__in = monster.moves.all().values_list('id'))
+    moves_monster_doesnt_have = Moves.objects.filter(user=request.user).exclude(id__in = monster.moves.all().values_list('id'))
     return render(request, 'monsters/detail.html', {'monster': monster, 'moves': moves_monster_doesnt_have,})
 
-class MonsterCreate(CreateView):
+
+class MonsterCreate(LoginRequiredMixin,CreateView):
     model = Monster
     fields = ['name', 'species', 'color', 'passive', 'attack', 'speed', 'defense']
     
@@ -61,20 +88,32 @@ class MonsterCreate(CreateView):
         
         # Save the form and continue with the normal workflow
         return super().form_valid(form)
-
     
-class MonsterUpdate(UpdateView):
+    def form_valid(self, form):
+        form.instance.user = self.request.user
+        return super().form_valid(form)
+    
+
+class MonsterUpdate(LoginRequiredMixin,UpdateView):
     model = Monster
     fields = ['name', 'species', 'color', 'passive', 'attack', 'speed', 'defense']
-    
-class MonsterDelete(DeleteView):
+  
+ 
+class MonsterDelete(LoginRequiredMixin,DeleteView):
     model = Monster
     success_url = '/monsters'
     
-class MovesCreate(CreateView):
+ 
+class MovesCreate(LoginRequiredMixin,CreateView):
     model = Moves
-    fields = '__all__'
+    fields = ['move_effect', 'special']
+    
+    def form_valid(self, form):
+        form.instance.user = self.request.user
+        return super().form_valid(form)
+    
 
+@login_required
 def add_moves(request, monster_id):
     form = Moves(request.POST)
     
@@ -84,18 +123,22 @@ def add_moves(request, monster_id):
         new_moves.save()
     return redirect('monster-detail', monster_id=monster_id)
     
-class MovesDetail(DetailView):
+class MovesDetail(LoginRequiredMixin,DetailView):
     model = Moves
-    
-class MovesList(ListView):
+     
+class MovesList(LoginRequiredMixin,ListView):
     model = Moves
     fields = '__all__'
+    
+    def get_queryset(self):
+        # Filter the queryset to show only objects related to the logged-in user
+        return Moves.objects.filter(user=self.request.user)
 
-class MovesUpdate(UpdateView):
+class MovesUpdate(LoginRequiredMixin,UpdateView):
     model = Moves
-    fields = '__all__'
-    
-class MovesDelete(DeleteView):
+    fields = ['move_effect', 'special']
+
+class MovesDelete(LoginRequiredMixin,DeleteView):
     model = Moves
     success_url = '/moves'
     
@@ -103,6 +146,7 @@ def associate_moves(request, monster_id, moves_id):
     Monster.objects.get(id=monster_id).moves.add(moves_id)
     return redirect('monster-detail', monster_id=monster_id)
 
+@login_required
 def remove_moves(request, monster_id, moves_id):
     monster = Monster.objects.get(id=monster_id)
     moves = Moves.objects.get(id=moves_id)

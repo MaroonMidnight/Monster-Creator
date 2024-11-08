@@ -3,9 +3,8 @@
 
 
 {% block head %}
-    
+<link rel="stylesheet" href="{% static 'css/monsters/monsters-form.css' %}" />
 {% endblock head %}
-    
 
 {% block content %}
 <div class="page-header">
@@ -25,6 +24,6 @@
       {{ form.as_table }}
     </table>
     
-    <button type="submit" class="btn submit">Submit</button>
+    <button type="submit" class="btn-submit">Submit</button>
   </form>
 {% endblock content %}

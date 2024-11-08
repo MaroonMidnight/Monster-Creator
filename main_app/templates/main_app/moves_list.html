@@ -1,6 +1,7 @@
 {% extends 'base.html' %} 
 {% load static %} 
 {% block head %}
+<link rel="stylesheet" href="{% static 'css/moves/moves-index.css' %}" />
 {% endblock %} 
 {% block content %}
 
@@ -10,14 +11,15 @@
 
 <section class="card-container">
   {% for moves in moves_list %}
-    <div class="card" style="border-color: {{ moves.color }}">
-      <div class="card-bg" style="background-color: {{ moves.color }}"></div>
+    <div class="card">
+      <div class="card-bg {{ moves.special }} ">
       <a href="{% url 'moves-detail' moves.id %}">
         <div class="card-content">
           <h2>{{ moves.get_special_display }}</h2>
           <p>Move Description: {{ moves.move_effect }}</p>
         </div>
       </a>
+      </div>
     </div>
   {% endfor %}
 </section>

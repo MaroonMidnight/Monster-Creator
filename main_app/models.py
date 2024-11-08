@@ -1,6 +1,7 @@
 from django.db import models
 
 from django.urls import reverse
+from django.contrib.auth.models import User
 # Create your models here.
 
 SPECIES = (
@@ -29,7 +30,7 @@ SPECIALS = (
     ('FB', 'Fire Ball'),       
     ('H', 'Holy'),       
     ('G', 'Grass Knot'),       
-    ('S', 'Slam'),       
+    ('SL', 'Slam'),       
 )
 
 class Moves(models.Model):
@@ -40,12 +41,14 @@ class Moves(models.Model):
         default=SPECIALS[0][0]
         )
     
+    
     def __str__(self):
         return self.special
     
     def get_absolute_url(self):
         return reverse("moves-detail", kwargs={"pk": self.id})
     
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
     
     
 class Monster(models.Model):
@@ -58,12 +61,13 @@ class Monster(models.Model):
     color = models.CharField(max_length=20)
     passive = models.CharField(
         max_length=1,
-        choices = PASSIVE,)
+        choices = PASSIVE)
     attack = models.IntegerField(default=0)
     defense =  models.IntegerField(default=0)
     speed = models.IntegerField(default=0)
     
     moves = models.ManyToManyField(Moves)
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
     
     def __str__(self):
         return self.name
