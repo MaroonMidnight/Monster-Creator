@@ -81,7 +81,7 @@ class MonsterCreate(LoginRequiredMixin,CreateView):
         
         total = attack_data + speed_data + defense_data
         
-        if total > 10 or total < 10:
+        if total > 10:
             # Add an error if the value is 10 or below
             form.add_error('attack', 'the sum of Attack, Speed and Defense must be equal to 10')
             return self.form_invalid(form)  # Re-render form with error message
