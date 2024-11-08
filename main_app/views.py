@@ -85,13 +85,10 @@ class MonsterCreate(LoginRequiredMixin,CreateView):
             # Add an error if the value is 10 or below
             form.add_error('attack', 'the sum of Attack, Speed and Defense must be equal to 10')
             return self.form_invalid(form)  # Re-render form with error message
-        
+        form.instance.user = self.request.user
         # Save the form and continue with the normal workflow
         return super().form_valid(form)
     
-    def form_valid(self, form):
-        form.instance.user = self.request.user
-        return super().form_valid(form)
     
 
 class MonsterUpdate(LoginRequiredMixin,UpdateView):
