@@ -95,7 +95,7 @@ else:
     DATABASES = {
         'default': {
             'ENGINE': 'django.db.backends.postgresql',
-            'NAME': '<dbnamehere>',
+            'NAME': 'monstercreator',
             # The value of 'NAME' should match the value of 'NAME' you replaced.
         }
     }
@@ -134,6 +134,8 @@ USE_TZ = True
 
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/5.1/howto/static-files/
+
+STATIC_URL = "static/"
 
 STATIC_ROOT = BASE_DIR / "staticfiles"
 
