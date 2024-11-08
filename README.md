@@ -2,7 +2,7 @@
 
 # Monster Creator
 
-Click [here!](https://dashboard.heroku.com/apps/monster-creator-app)
+Click [here!](https://monster-creator-app-e7676da36775.herokuapp.com/)
 
 ## Technolagies used
 Python, Django, Postgres, sqlite,
