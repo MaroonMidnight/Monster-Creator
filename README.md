@@ -13,3 +13,4 @@ Python, Django, Postgres, sqlite,
 * View Others Monsters
 * Trade Monsters
 * Add a battle function
+* Add a pixelated monster
